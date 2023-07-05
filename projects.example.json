@@ -1,0 +1,26 @@
+{
+    "sharechat-android": {
+        "path": "add-absolute-path-to-project",
+        "scripts": {
+            "prebundle": "git restore . && git checkout ${branch} && rm -rf node_modules && yarn install",
+            "bundle": "yarn set:production; yarn set:release; yarn run react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output ${sourcemapDir}/bundle.js --sourcemap-output ${sourcemapDir}/bundle.js.map",
+            "postbundle": "rm -f ${sourcemapDir}/*.js && git checkout staging-android"
+        }
+    },
+    "moj-android": {
+        "path": "add-absolute-path-to-project",
+        "scripts": {
+            "prebundle": "git restore . && git checkout ${branch} && rm -rf node_modules && yarn install",
+            "bundle": "yarn run react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output ${sourcemapDir}/bundle.js --sourcemap-output ${sourcemapDir}/bundle.js.map",
+            "postbundle": "rm -f ${sourcemapDir}/*.js && git checkout staging"
+        }
+    },
+    "payments-web": {
+        "path": "add-absolute-path-to-project",
+        "scripts": {
+            "prebundle": "git restore . && git checkout ${branch} && rm -rf node_modules && yarn install",
+            "bundle": "yarn run vite build --sourcemap",
+            "postbundle": "cp ./dist/**/*.map ${sourcemapDir} && git checkout staging"
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "tracer-tool",
+  "version": "1.0.0",
+  "description": "A tool which stacktrace from your clipboard (or from a file) and outputs a readable stacktrace with proper line numbers for each line",
+  "type": "module",
+  "bin": {
+    "tracer-tool": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "stacktrace",
+    "tool"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "clipboardy": "^3.0.0",
+    "commander": "^11.0.0",
+    "inquirer": "^9.2.7",
+    "source-map": "^0.7.4",
+    "stacktrace-parser": "^0.1.10"
+  },
+  "devDependencies": {
+    "eslint": "^8.44.0"
+  }
+}
