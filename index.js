@@ -99,7 +99,13 @@ async function runTraceAction(branch, project, options) {
         branch
       );
 
-      if (!existsSync(sourcemapDir) || readdirSync(sourcemapDir).length === 0 || options.create) {
+      // check if sourcemap directory is empty
+      if (
+        !existsSync(sourcemapDir) ||
+        readdirSync(sourcemapDir).length === 0 ||
+        options.create
+      ) {
+        // check if create option is not passed -> otherwise prompt for sourcemap creation
         if (!options.create) {
           console.log(
             chalk.yellow(
@@ -118,7 +124,9 @@ async function runTraceAction(branch, project, options) {
             return;
           }
         }
-        console.log(chalk.blue("======= Creating new Bundle/Sourcemap ======="));
+        console.log(
+          chalk.blue("======= Creating new Bundle/Sourcemap =======")
+        );
         if (!existsSync(sourcemapDir)) {
           mkdirSync(sourcemapDir, { recursive: true });
         }
@@ -168,11 +176,19 @@ async function runTraceAction(branch, project, options) {
 
       const sourcemapPath = join(sourcemapDir, sourcemapName);
 
-      console.log(chalk.bgBlue(`======= Tracing using ${sourcemapPath} =======`));
+      console.log(
+        chalk.bgBlue(`======= Tracing using ${sourcemapPath} =======`)
+      );
       printStacktrace({
         sourcemapPath,
         stacktracePath: options.stacktracePath,
       });
+    } else {
+      console.log(
+        chalk.yellow(
+          "Branch is not passed, Usage: trace-tool <branch> [project]"
+        )
+      );
     }
   } catch (err) {
     console.log(chalk.red(err));

@@ -8,10 +8,11 @@ $ git clone https://github.com/kaushalmeena/tracer-tool.git
 $ cd tracer-tool
 ```
 
-2. Install dependencies and link package
+2. Install dependencies and add global alias
 ```bash
 $ npm install
-$ npm link
+$ echo "alias tracer-tool='node $PWD/index.js'" >> ~/.zshrc   # if you are using zsh
+$ echo "alias tracer-tool='node $PWD/index.js'" >> ~/.bashrc  # if you are using bash
 ```
 Now CLI tool is available globally and can be invoked with the `tracer-tool` command
 
