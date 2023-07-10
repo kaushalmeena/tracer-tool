@@ -17,7 +17,7 @@ $ echo "alias tracer-tool='node $PWD/index.js'" >> ~/.bashrc  # if you are using
 Now CLI tool is available globally and can be invoked with the `tracer-tool` command
 
 
-2. Create a `project.json` file, and add projects in it, take reference from `projects.example.json`
+3. Create a `project.json` file, and add projects in it, take reference from `projects.example.json`
 
 Each project has the following structure:
 
@@ -34,13 +34,13 @@ Each project has the following structure:
 }
 ```
 These scripts will be used for creating a source map:
-1. prebundle - should take care of things before bundling e.g. checkout to branch `${branch}`, install fresh dependencies etc.
-2. bundle - should generate bundle/source map for the project
-3. postbundle - should take care of things after bundling e.g. move source map(s) to `${sourcemapDir}`
+- prebundle - should take care of things before bundling e.g. checkout to branch `${branch}`, install fresh dependencies etc.
+- bundle - should generate bundle/source map for the project
+- postbundle - should take care of things after bundling e.g. move source map(s) to `${sourcemapDir}`
 
 In scripts `${sourcemapDir}` and `${branch}` would injected via CLI
 
-2. Run the tool using (copy stack trace first or provide a path to stack trace file via -f option)
+4. Run the tool using (copy stack trace first or provide a path to stack trace file via -f option)
 ```bash
 $ tracer-tool <branch-name> <project-name>
 ```
