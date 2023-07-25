@@ -1,20 +1,24 @@
 #!/usr/bin/env node
 
-import { program } from "commander";
-import { parse } from "stacktrace-parser";
-import clipboardy from "clipboardy";
-import inquirer from "inquirer";
-import { SourceMapConsumer } from "source-map";
-import { exec } from "child_process";
-import { readFileSync, existsSync, readdirSync, mkdirSync, rmSync } from "fs";
-import { homedir } from "os";
 import chalk from "chalk";
-import { join } from "path";
+import { exec } from "child_process";
+import clipboardy from "clipboardy";
+import { program } from "commander";
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from "fs";
+import inquirer from "inquirer";
+import { homedir } from "os";
+import { dirname, join } from "path";
+import { SourceMapConsumer } from "source-map";
+import { parse } from "stacktrace-parser";
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const SOURCEMAP_DIRECTORY = "Sourcemaps";
 const SOURCEMAP_DIRECTORY_PATH = join(homedir(), SOURCEMAP_DIRECTORY);
 
-const PROJECTS_FILENAME = "projects.json";
+const PROJECTS_FILEPATH =  join(__dirname, "./projects.json");
 
 function shellExec(command, cwd) {
   return new Promise((resolve, reject) => {
@@ -76,9 +80,9 @@ async function printStacktrace({ sourcemapPath, stacktracePath }) {
   });
 }
 
-async function runTraceAction(branch, project, options) {
+async function runTraceAction(project, branch, options) {
   try {
-    const settings = JSON.parse(readFileSync(PROJECTS_FILENAME, "utf-8"));
+    const settings = JSON.parse(readFileSync(PROJECTS_FILEPATH, "utf-8"));
 
     // check is project is provided via cli -> otherwise prompt user to select from list
     let selectedProject = project;
@@ -92,11 +96,28 @@ async function runTraceAction(branch, project, options) {
       selectedProject = selectedOption.project;
     }
 
-    if (branch) {
+     // check is branch is provided via cli -> otherwise prompt user to select from list
+     let selectedBranch = branch;
+     if (!selectedBranch && !options.create) {
+      const branchDir = join(
+        SOURCEMAP_DIRECTORY_PATH,
+        selectedProject,
+      );
+       const files = readdirSync(branchDir);
+       const selectedOption = await inquirer.prompt({
+         name: "branch",
+         type: "list",
+         choices: files,
+         message: "Select branch to use",
+       });
+       selectedBranch = selectedOption.branch;
+     }
+
+    if (selectedBranch) {
       const sourcemapDir = join(
         SOURCEMAP_DIRECTORY_PATH,
         selectedProject,
-        branch
+        selectedBranch
       );
 
       // check if sourcemap directory is empty
@@ -109,8 +130,8 @@ async function runTraceAction(branch, project, options) {
         if (!options.create) {
           console.log(
             chalk.yellow(
-              "-> Existing Sourcemap not found for branch",
-              branch,
+              "-> Existing Sourcemap not found for selectedBranch",
+              selectedBranch,
               "for project",
               selectedProject
             )
@@ -136,7 +157,7 @@ async function runTraceAction(branch, project, options) {
         const path = projectConfig.path;
         const preCommand = projectConfig.scripts.prebundle.replaceAll(
           "${branch}",
-          branch
+          selectedBranch
         );
         const bundleCommand = projectConfig.scripts.bundle.replaceAll(
           "${sourcemapDir}",
@@ -186,7 +207,7 @@ async function runTraceAction(branch, project, options) {
     } else {
       console.log(
         chalk.yellow(
-          "Branch is not passed, Usage: trace-tool <branch> [project]"
+          "Branch is not passed, Usage: trace-tool [project] [branch]"
         )
       );
     }
@@ -205,8 +226,8 @@ program
   .description(
     "A tool which takes a source map and a stack trace from your clipboard (or from a filepath) and outputs a readable stacktrace with proper line numbers for each line"
   )
-  .command("trace <branch> [project]", { isDefault: true })
-  .description("Generate/Show readable trace for specified branch")
+  .command("trace [project] [branch]", { isDefault: true })
+  .description("Generate/Show readable trace for specified selectedBranch")
   .option("-f, --stacktrace-path <path>", "Stacktrace filepath to use")
   .option("-n, --sourcemap-name <name>", "Sourcemap name to use")
   .option("-c, --create", "Force bundle/sourcemap creation")
