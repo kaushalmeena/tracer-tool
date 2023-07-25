@@ -42,8 +42,10 @@ In scripts `${sourcemapDir}` and `${branch}` would injected via CLI
 
 4. Run the tool using (copy stack trace first or provide a path to stack trace file via -f option)
 ```bash
-$ tracer-tool <branch-name> <project-name>
+$ tracer-tool [project] [branch]
 ```
+Note: Passing project and branch is optional, user will be prompted from select from list if not explicitly specified
+
 If would check for already generated sourcemap in
 
 `[UsersDirectory]/Sourcemaps/<project-name>/<branch-name>/`  
