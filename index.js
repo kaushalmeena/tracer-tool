@@ -130,10 +130,10 @@ async function runTraceAction(project, branch, options) {
         if (!options.create) {
           console.log(
             chalk.yellow(
-              "-> Existing Sourcemap not found for selectedBranch",
+              "-> Existing Sourcemap not found for project",
+              selectedProject,
+              "for branch",
               selectedBranch,
-              "for project",
-              selectedProject
             )
           );
           const confirmation = await inquirer.prompt({
