@@ -7,6 +7,14 @@
             "postbundle": "rm -f ${sourcemapDir}/*.js && git checkout staging-android"
         }
     },
+    "sharechat-ios": {
+        "path": "add-absolute-path-to-project",
+        "scripts": {
+            "prebundle": "git restore . && git checkout ${branch} && rm -rf node_modules && yarn install",
+            "bundle": "yarn run react-native bundle --platform ios --dev false --entry-file index.ios.js --bundle-output ${sourcemapDir}/bundle.js --sourcemap-output ${sourcemapDir}/bundle.js.map",
+            "postbundle": "rm -f ${sourcemapDir}/*.js && git checkout staging-ios"
+        }
+    },
     "moj-android": {
         "path": "add-absolute-path-to-project",
         "scripts": {
