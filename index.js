@@ -30,7 +30,7 @@ function shellExec(command, cwd) {
       if (code === 0) {
         resolve();
       } else {
-        reject("Error occured while running command");
+        reject("Error occurred while running command");
       }
     });
     child.on("error", function (err) {
