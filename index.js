@@ -42,7 +42,7 @@ function shellExec(command, cwd) {
 async function printStacktrace({ sourcemapPath, stacktracePath }) {
   const fileContent = readFileSync(sourcemapPath, "utf-8");
   const mapContent = JSON.parse(fileContent);
-  const smc = await new SourceMapConsumer(mapContent);
+  const smc = new SourceMapConsumer(mapContent);
 
   let str;
   if (stacktracePath !== undefined) {
