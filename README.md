@@ -4,15 +4,15 @@ A tool which takes stack-trace from your clipboard (or from a file) and outputs 
 ## Usage
 1. Clone this repo and then change the directory to the `tracer-tool` folder:
 ```bash
-$ git clone https://github.com/kaushalmeena/tracer-tool.git
-$ cd tracer-tool
+git clone https://github.com/kaushalmeena/tracer-tool.git
+cd tracer-tool
 ```
 
 2. Install dependencies and add global alias
 ```bash
-$ npm install
-$ echo "alias tracer-tool='node $PWD/index.js'" >> ~/.zshrc   # if you are using zsh
-$ echo "alias tracer-tool='node $PWD/index.js'" >> ~/.bashrc  # if you are using bash
+npm install
+echo "alias tracer-tool='node $PWD/index.js'" >> ~/.zshrc   # if you are using zsh
+echo "alias tracer-tool='node $PWD/index.js'" >> ~/.bashrc  # if you are using bash
 ```
 Now CLI tool is available globally and can be invoked with the `tracer-tool` command
 
@@ -42,7 +42,7 @@ In scripts `${sourcemapDir}` and `${branch}` would injected via CLI
 
 4. Run the tool using (copy stack trace first or provide a path to stack trace file via -f option)
 ```bash
-$ tracer-tool [project] [branch]
+tracer-tool [project] [branch]
 ```
 Note: Passing project and branch is optional, user will be prompted from select from list if not explicitly specified
 
